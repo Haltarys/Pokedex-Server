@@ -1,0 +1,18 @@
+version: '3'
+
+networks:
+  fs3-pokedex:
+
+services:
+  backend:
+    build:
+      context: .
+      target: development
+    env_file: .env
+    restart: unless-stopped
+    networks:
+      - fs3-pokedex
+    ports:
+      - 3001:3001
+    volumes:
+      - ./:/app
