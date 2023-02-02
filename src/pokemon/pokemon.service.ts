@@ -1,37 +1,15 @@
 import { HttpService } from '@nestjs/axios';
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
 import { firstValueFrom, map } from 'rxjs';
-import { IPokemon, IPokemonBasic } from 'src/models/pokemon.model';
+import { IPokemon, IPokemonBasic } from 'src/dto/pokemon.dto';
 
 @Injectable()
-export class PokemonService implements OnModuleInit {
-  @Inject() private readonly config: ConfigService;
-  private pokemonApi: string;
-  private pokemonApiPokemon: string;
-  private pokemonApiSpecies: string;
-  public status: 'pending' | 'ready' | 'unavailable' = 'pending';
-
+export class PokemonService {
   constructor(private readonly httpService: HttpService) {}
 
-  onModuleInit() {
-    this.pokemonApi = this.config.get('POKEMON_API') || '';
-    this.pokemonApiPokemon = this.config.get('POKEMON_API_POKEMON') || '';
-    this.pokemonApiSpecies = this.config.get('POKEMON_API_SPECIES') || '';
-    if (this.pokemonApi && this.pokemonApiPokemon && this.pokemonApiSpecies)
-      this.status = 'ready';
-    else this.status = 'unavailable';
-  }
-
   async getPokemonById(id: number): Promise<IPokemon> {
-    if (this.status === 'unavailable') throw new Error('503');
-    const pokemon: Partial<IPokemon> | void = await firstValueFrom(
-      this.httpService.get(
-        `${this.pokemonApi}${this.pokemonApiPokemon}/${id}`,
-        {
-          headers: { 'Accept-Encoding': 'gzip,deflate,compress' },
-        },
-      ),
+    const pokemon: Partial<IPokemon> = await firstValueFrom(
+      this.httpService.get(`/pokemon/${id}`),
     )
       .then((response) => response.data)
       .then((data: any) => {
@@ -46,59 +24,38 @@ export class PokemonService implements OnModuleInit {
             value: s.base_stat,
           })),
         };
-      })
-      .catch((err: Error) => {
-        throw new Error('500');
       });
-    const species: Partial<IPokemon> | void = await firstValueFrom(
+    const species: Partial<IPokemon> = await firstValueFrom(
       this.httpService
-        .get(`${this.pokemonApi}${this.pokemonApiSpecies}/${id}`, {
-          headers: { 'Accept-Encoding': 'gzip,deflate,compress' },
-        })
+        .get(`/pokemon-species/${id}`)
         .pipe(map((res) => res.data)),
-    )
-      .then((data: any) => {
-        return {
-          happiness: data.happiness,
-          descriptions: data.flavor_text_entries.filter(
-            (e: any) => e.language.name === 'en' || e.language.name === 'fr',
-          ),
-          genera: data.genera.filter(
-            (e: any) => e.language.name === 'en' || e.language.name === 'fr',
-          ),
-          habitat: data.habitat.name,
-          names: data.names.filter(
-            (e: any) => e.language.name === 'en' || e.language.name === 'fr',
-          ),
-        };
-      })
-      .catch((err: Error) => {
-        throw new Error('500');
-      });
-    if (!pokemon || !Object.keys(pokemon) || !species || !Object.keys(species))
-      throw new Error('204');
+    ).then((data: any) => {
+      return {
+        happiness: data.happiness,
+        descriptions: data.flavor_text_entries.filter(
+          (e: any) => e.language.name === 'en' || e.language.name === 'fr',
+        ),
+        genera: data.genera.filter(
+          (e: any) => e.language.name === 'en' || e.language.name === 'fr',
+        ),
+        habitat: data.habitat.name,
+        names: data.names.filter(
+          (e: any) => e.language.name === 'en' || e.language.name === 'fr',
+        ),
+      };
+    });
     return { ...pokemon, ...species } as IPokemon;
   }
 
   async getPokemonCard(id: number): Promise<IPokemonBasic> {
-    if (this.status === 'unavailable') throw new Error('503');
-    const result: IPokemonBasic | void = await firstValueFrom(
-      this.httpService
-        .get(`${this.pokemonApi}${this.pokemonApiPokemon}/${id}`, {
-          headers: { 'Accept-Encoding': 'gzip,deflate,compress' },
-        })
-        .pipe(map((res: any) => res.data)),
-    )
-      .then((data: any) => ({
-        id,
-        name: data.name,
-        types: data.types.map((t: any) => t.type.name),
-        img: data.sprites.front_default,
-      }))
-      .catch((err: Error) => {
-        throw new Error('500');
-      });
-    if (!result) throw new Error('204');
+    const result: IPokemonBasic = await firstValueFrom(
+      this.httpService.get(`/pokemon/${id}`).pipe(map((res: any) => res.data)),
+    ).then((data: any) => ({
+      id,
+      name: data.name,
+      types: data.types.map((t: any) => t.type.name),
+      img: data.sprites.front_default,
+    }));
     return result;
   }
 }
