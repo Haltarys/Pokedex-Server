@@ -1,28 +1,40 @@
 import { HttpService } from '@nestjs/axios';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom, map } from 'rxjs';
 import { IPokemon, IPokemonBasic } from 'src/models/pokemon.model';
 
 @Injectable()
-export class PokemonService {
+export class PokemonService implements OnModuleInit {
   @Inject() private readonly config: ConfigService;
+  private pokemonApi: string;
+  private pokemonApiPokemon: string;
+  private pokemonApiSpecies: string;
+  public status: 'pending' | 'ready' | 'unavailable' = 'pending';
 
   constructor(private readonly httpService: HttpService) {}
 
+  onModuleInit() {
+    this.pokemonApi = this.config.get('POKEMON_API') || '';
+    this.pokemonApiPokemon = this.config.get('POKEMON_API_POKEMON') || '';
+    this.pokemonApiSpecies = this.config.get('POKEMON_API_SPECIES') || '';
+    if (this.pokemonApi && this.pokemonApiPokemon && this.pokemonApiSpecies)
+      this.status = 'ready';
+    else this.status = 'unavailable';
+  }
+
   async getPokemonById(id: number): Promise<IPokemon> {
-    const pokemonApi = this.config.get('POKEMON_API');
-    const pokemonApiPokemon = this.config.get('POKEMON_API_POKEMON');
-    const pokemonApiSpecies = this.config.get('POKEMON_API_SPECIES');
+    if (this.status === 'unavailable') throw new Error('503');
     const pokemon: Partial<IPokemon> | void = await firstValueFrom(
-      this.httpService.get(`${pokemonApi}${pokemonApiPokemon}/${id}`, {
-        headers: { 'Accept-Encoding': 'gzip,deflate,compress' },
-      })
+      this.httpService.get(
+        `${this.pokemonApi}${this.pokemonApiPokemon}/${id}`,
+        {
+          headers: { 'Accept-Encoding': 'gzip,deflate,compress' },
+        },
+      ),
     )
       .then((response) => response.data)
       .then((data: any) => {
-        // console.log('=========== POKEMON ==========');
-        // console.log(data);
         return {
           id,
           types: data.types.map((t: any) => t.type.name),
@@ -35,15 +47,17 @@ export class PokemonService {
           })),
         };
       })
-      .catch((err: Error) => console.error(err));
+      .catch((err: Error) => {
+        throw new Error('500');
+      });
     const species: Partial<IPokemon> | void = await firstValueFrom(
-      this.httpService.get(`${pokemonApi}${pokemonApiSpecies}/${id}`, {
-        headers: { 'Accept-Encoding': 'gzip,deflate,compress' },
-      }).pipe(map(res => res.data)),
+      this.httpService
+        .get(`${this.pokemonApi}${this.pokemonApiSpecies}/${id}`, {
+          headers: { 'Accept-Encoding': 'gzip,deflate,compress' },
+        })
+        .pipe(map((res) => res.data)),
     )
       .then((data: any) => {
-        // console.log('=========== SPECIES ==========');
-        // console.log(data);
         return {
           happiness: data.happiness,
           descriptions: data.flavor_text_entries.filter(
@@ -58,18 +72,19 @@ export class PokemonService {
           ),
         };
       })
-      .catch((err: Error) => console.error(err));
+      .catch((err: Error) => {
+        throw new Error('500');
+      });
     if (!pokemon || !Object.keys(pokemon) || !species || !Object.keys(species))
-      throw new Error('Data not loaded');
+      throw new Error('204');
     return { ...pokemon, ...species } as IPokemon;
   }
 
   async getPokemonCard(id: number): Promise<IPokemonBasic> {
-    const pokemonApi = this.config.get('POKEMON_API');
-    const pokemonApiPokemon = this.config.get('POKEMON_API_POKEMON');
+    if (this.status === 'unavailable') throw new Error('503');
     const result: IPokemonBasic | void = await firstValueFrom(
       this.httpService
-        .get(`${pokemonApi}${pokemonApiPokemon}/${id}`, {
+        .get(`${this.pokemonApi}${this.pokemonApiPokemon}/${id}`, {
           headers: { 'Accept-Encoding': 'gzip,deflate,compress' },
         })
         .pipe(map((res: any) => res.data)),
@@ -80,8 +95,10 @@ export class PokemonService {
         types: data.types.map((t: any) => t.type.name),
         img: data.sprites.front_default,
       }))
-      .catch((err: Error) => console.error(err));
-    if (!result) throw new Error('Data not loaded');
+      .catch((err: Error) => {
+        throw new Error('500');
+      });
+    if (!result) throw new Error('204');
     return result;
   }
 }
