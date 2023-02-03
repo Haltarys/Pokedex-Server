@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { firstValueFrom, lastValueFrom, map } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 import { IPokemon, IPokemonBasic } from 'src/pokemon/dto/pokemon.dto';
 
 @Injectable()
@@ -53,7 +53,7 @@ export class PokemonService {
             lang: e.language.name,
             value: e.genus,
           })),
-        habitat: data.habitat.name,
+        habitat: data.habitat?.name || '',
         names: data.names
           .filter(
             (e: any) => e.language.name === 'en' || e.language.name === 'fr',
