@@ -1,6 +1,6 @@
 import { Controller, Get, HttpException, Param } from '@nestjs/common';
 import { PokemonIdDto } from './dto/pokemon-id.dto';
-import { IPokemon, IPokemonBasic } from './dto/pokemon.dto';
+import { IPokemonBasic } from './dto/pokemon.dto';
 import { PokemonService } from './pokemon.service';
 
 @Controller('pokemon')

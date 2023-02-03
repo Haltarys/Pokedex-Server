@@ -3,10 +3,10 @@ export interface IStat {
   value: number;
 }
 
-export interface IPokemonTranslation {
+export type IPokemonTranslation = {
   language: string;
   value: string;
-}
+};
 
 export type IPokemonBasic = {
   id: number;
@@ -20,7 +20,7 @@ export type IPokemon = {
   abilities: string[];
   stats: IStat[];
   happiness: number;
-  descriptions: IPokemonTranslation[];
+  descriptions: ({ version: string } & IPokemonTranslation)[];
   genera: IPokemonTranslation[];
   names: IPokemonTranslation[];
   habitat: string;
