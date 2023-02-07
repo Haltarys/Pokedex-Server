@@ -65,10 +65,12 @@ export class PokemonService {
         }),
       );
 
-    return pokemonObservable.pipe(
-      combineLatestWith(speciesObservable),
-      map(([pokemon, species]) =>
-        Object.assign(new PokemonFullDto(), pokemon, species),
+    return lastValueFrom<PokemonFullDto>(
+      pokemonObservable.pipe(
+        combineLatestWith(speciesObservable),
+        map(([pokemon, species]) =>
+          Object.assign(new PokemonFullDto(), pokemon, species),
+        ),
       ),
     );
   }
