@@ -1,7 +1,7 @@
 import { Transform } from 'class-transformer';
 import { IsPositive } from 'class-validator';
 
-export class PokemonIdDto {
+export class PokemonIdParams {
   @Transform(({ value }) => parseInt(value), { toClassOnly: true })
   @IsPositive()
   id: number;
