@@ -3,7 +3,21 @@ version: '3'
 networks:
   fs3-pokedex:
 
+volumes:
+  mongo-data:
+
 services:
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    networks:
+      - fs3-pokedex
+    volumes:
+      - mongo-data:/data/db
+
   backend:
     build:
       context: .
