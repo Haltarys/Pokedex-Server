@@ -5,7 +5,6 @@ import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserDocument } from './user.schema';
-import { stripPassword } from './utils';
 
 @Injectable()
 export class UserService {
@@ -15,22 +14,16 @@ export class UserService {
   ) {}
 
   async findAll(): Promise<UserDocument[]> {
-    return this.userModel
-      .find()
-      .exec()
-      .then((users) => users.map(stripPassword));
+    return this.userModel.find().exec();
   }
 
   async findOne(id: string): Promise<UserDocument | null> {
-    return this.userModel
-      .findById(id)
-      .exec()
-      .then((user) => (user ? stripPassword(user) : null));
+    return this.userModel.findById(id).exec();
   }
 
   async findOneByEmail(email: string): Promise<UserDocument | null> {
     // Here, we do need to return the password hash
-    return this.userModel.findOne({ email }).exec();
+    return this.userModel.findOne({ email }).select('password').exec();
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserDocument> {
@@ -39,7 +32,12 @@ export class UserService {
     );
     const user = new this.userModel(createUserDto);
 
-    return user.save().then(stripPassword);
+    return user.save().then((user) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      user.password = undefined;
+      return user;
+    });
   }
 
   async update(
@@ -48,14 +46,13 @@ export class UserService {
   ): Promise<UserDocument | null> {
     return this.userModel
       .findByIdAndUpdate(id, updateUserDto, { new: true })
-      .exec()
-      .then((user) => (user ? stripPassword(user) : null));
+      .exec();
   }
 
-  async remove(id: string): Promise<UserDocument | null> {
+  async remove(id: string): Promise<boolean> {
     return this.userModel
       .findByIdAndDelete(id)
       .exec()
-      .then((user) => (user ? stripPassword(user) : null));
+      .then((user) => !!user);
   }
 }

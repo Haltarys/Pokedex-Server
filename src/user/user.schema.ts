@@ -3,13 +3,13 @@ import { HydratedDocument } from 'mongoose';
 
 @Schema({ versionKey: false })
 export class User {
-  @Prop()
+  @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true, select: false })
   password: string;
 }
 
