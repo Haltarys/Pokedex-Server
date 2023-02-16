@@ -1,16 +1,20 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import { Role } from 'src/user/enums/role.enum';
 
 @Schema({ versionKey: false })
 export class User {
-  @Prop()
+  @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop()
+  @Prop({ required: true })
   name: string;
 
-  @Prop()
+  @Prop({ required: true, select: false })
   password: string;
+
+  @Prop({ required: true, enum: Role, default: Role.USER })
+  role: Role;
 }
 
 export type UserDocument = HydratedDocument<User>;
