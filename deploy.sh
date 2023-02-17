@@ -6,7 +6,7 @@
 
 # Configuration
 root_directory="/app"
-app_directory="fs3-pokemon-back"
+app_directory="fs3-pokedex-back"
 image_name=$app_directory
 container_name=$app_directory
 
@@ -28,6 +28,7 @@ fi
 
 # Build Docker image
 cp production.env "$app_directory/.env"
+cp -r ssl $app_directory
 echo "Building image..."
 docker build -t $image_name $app_directory
 
@@ -37,6 +38,6 @@ docker stop $container_name && docker rm $container_name && echo "Container stop
 
 # Run image
 echo "Starting app server..."
-docker run -d --name=$container_name -p 80:3001 "$image_name:latest" && echo "Server started."
+docker run -d --name=$container_name -p 443:443 "$image_name:latest" && echo "Server started."
 
 echo "Done."
