@@ -16,6 +16,8 @@ CMD [ "yarn", "run", "start:dev" ]
 
 FROM base AS production
 
+ENV NODE_ENV=production
+
 RUN yarn run build
 
 CMD [ "yarn", "run", "start:prod" ]
