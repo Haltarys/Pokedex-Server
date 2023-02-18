@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { Role } from 'src/user/enums/role.enum';
 
-@Schema({ versionKey: false })
+@Schema({ versionKey: false, toJSON: { virtuals: true } })
 export class User {
   @Prop({ required: true, unique: true })
   email: string;

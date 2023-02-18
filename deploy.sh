@@ -26,6 +26,8 @@ else
   git clone git@gitlab.com:calvetalex/fs3-pokedex-back.git $app_directory --depth 1
 fi
 
+commit_hash=$(git --git-dir="$app_directory/.git" rev-parse --short HEAD)
+
 # Build Docker image
 cp production.env "$app_directory/.env"
 cp -r ssl $app_directory
@@ -39,5 +41,9 @@ docker stop $container_name && docker rm $container_name && echo "Container stop
 # Run image
 echo "Starting app server..."
 docker run -d --name=$container_name -p 443:443 "$image_name:latest" && echo "Server started."
+
+# Log
+echo "Deployed commit $commit_hash."
+echo "$(date +"%Y-%m-%d %H:%M:%S"): Deployed commit $commit_hash." >> deploy.log
 
 echo "Done."
