@@ -5,4 +5,7 @@ import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { Role } from 'src/user/enums/role.enum';
 
 export const UserRoute = () =>
-  applyDecorators(Roles(Role.USER), UseGuards(JwtAuthGuard, RolesGuard));
+  applyDecorators(
+    Roles(Role.USER, Role.ADMIN),
+    UseGuards(JwtAuthGuard, RolesGuard),
+  );

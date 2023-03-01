@@ -1,20 +1,12 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Patch,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
 import { UpdateUserDto } from 'src/user/dto/update-user.dto';
 import { UserDocument } from 'src/user/user.schema';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
+import { LoginRoute } from './decorators/login.decorator';
 import { UserRoute } from './decorators/user-route.decorator';
 import { CredentialsDto } from './dto/credentials.dto';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +15,7 @@ export class AuthController {
     private readonly userService: UserService,
   ) {}
 
-  @UseGuards(LocalAuthGuard)
+  @LoginRoute()
   @Post('login')
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async logIn(@CurrentUser() user: UserDocument, @Body() _: CredentialsDto) {
@@ -48,6 +40,6 @@ export class AuthController {
   @UserRoute()
   @Delete('profile')
   deleteProfile(@CurrentUser('id') id: string) {
-    return this.userService.remove(id);
+    return this.userService.delete(id);
   }
 }

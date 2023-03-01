@@ -13,7 +13,7 @@ export class AuthService {
 
   private readonly rounds = 12;
 
-  async validateUser(
+  async validateCredentials(
     email: string,
     password: string,
   ): Promise<UserDocument | null> {
@@ -22,6 +22,13 @@ export class AuthService {
       return user;
     }
     return null;
+  }
+
+  async validateJwt(jwt: string) {
+    return this.jwtService
+      .verifyAsync(jwt)
+      .then(() => true)
+      .catch(() => false);
   }
 
   async logIn({ id }: UserDocument) {
