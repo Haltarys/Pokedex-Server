@@ -49,7 +49,7 @@ export class UserService {
       .exec();
   }
 
-  async remove(id: string): Promise<boolean> {
+  async delete(id: string): Promise<boolean> {
     return this.userModel
       .findByIdAndDelete(id)
       .exec()

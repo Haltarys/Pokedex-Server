@@ -16,9 +16,10 @@ export class MongooseConfigService implements MongooseOptionsFactory {
         username: this.configService.get<string>('DATABASE_USER'),
         password: this.configService.get<string>('DATABASE_PASSWORD'),
       },
-      dbName: 'fs3-pokemon',
+      dbName: 'fs3-pokedex',
       retryWrites: true,
       writeConcern: { w: 'majority' },
+      ignoreUndefined: true,
     };
   }
 }

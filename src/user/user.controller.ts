@@ -8,9 +8,9 @@ import {
   Post,
 } from '@nestjs/common';
 import { AdminRoute } from 'src/auth/decorators/admin-route.decorator';
+import { IdParams } from 'src/utils/dto/id.params';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserIdParams } from './dto/user-id.params';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -25,7 +25,7 @@ export class UserController {
 
   @AdminRoute()
   @Get(':id')
-  findOne(@Param() { id }: UserIdParams) {
+  findOne(@Param() { id }: IdParams) {
     return this.userService.findOne(id);
   }
 
@@ -36,13 +36,13 @@ export class UserController {
 
   @AdminRoute()
   @Patch(':id')
-  update(@Param() { id }: UserIdParams, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param() { id }: IdParams, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
 
   @AdminRoute()
   @Delete(':id')
-  remove(@Param() { id }: UserIdParams) {
-    return this.userService.remove(id);
+  delete(@Param() { id }: IdParams) {
+    return this.userService.delete(id);
   }
 }
