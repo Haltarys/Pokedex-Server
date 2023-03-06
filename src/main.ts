@@ -5,7 +5,7 @@ import * as http from 'http';
 import * as https from 'https';
 import { AppModule } from './app.module';
 import { LaunchConfigService } from './config/launch-config.service';
-import { SocketIoAdapter } from './utils/adapters/socket.io.adapter';
+import { SocketIoAdapter } from './utils/adapters/socket-io.adapter';
 import { CustomValidationPipe } from './utils/pipes/custom-validation.pipe';
 
 async function bootstrap() {

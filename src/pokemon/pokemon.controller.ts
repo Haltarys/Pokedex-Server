@@ -1,4 +1,11 @@
-import { Controller, Get, HttpException, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+} from '@nestjs/common';
+import { isAxiosError } from 'axios';
 import { PokemonIdParams } from './dto/pokemon-id.params';
 import { PokemonService } from './pokemon.service';
 
@@ -11,7 +18,12 @@ export class PokemonController {
     try {
       return await this.pokemonService.getPokemonBasic(id);
     } catch (err) {
-      throw new HttpException(err.response.statusText, err.response.status);
+      if (isAxiosError(err)) {
+        throw new HttpException(
+          err.response?.statusText ?? '',
+          err.response?.status ?? HttpStatus.BAD_REQUEST,
+        );
+      }
     }
   }
 
@@ -20,7 +32,12 @@ export class PokemonController {
     try {
       return await this.pokemonService.getPokemonFull(id);
     } catch (err) {
-      throw new HttpException(err.response.statusText, err.response.status);
+      if (isAxiosError(err)) {
+        throw new HttpException(
+          err.response?.statusText ?? '',
+          err.response?.status ?? HttpStatus.BAD_REQUEST,
+        );
+      }
     }
   }
 }
