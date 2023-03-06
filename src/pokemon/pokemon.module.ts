@@ -1,5 +1,9 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+import { PokemonTeamController } from './pokemon-team.controller';
+import { PokemonTeam, PokemonTeamSchema } from './pokemon-team.schema';
+import { PokemonTeamService } from './pokemon-team.service';
 import { PokemonController } from './pokemon.controller';
 import { PokemonService } from './pokemon.service';
 
@@ -10,8 +14,11 @@ import { PokemonService } from './pokemon.service';
       // headers needed to avoid unexpected end of file error, bug in axios dependency since 1.2
       headers: { 'Accept-Encoding': 'gzip,deflate,compress' },
     }),
+    MongooseModule.forFeature([
+      { name: PokemonTeam.name, schema: PokemonTeamSchema },
+    ]),
   ],
-  providers: [PokemonService],
-  controllers: [PokemonController],
+  controllers: [PokemonController, PokemonTeamController],
+  providers: [PokemonService, PokemonTeamService],
 })
 export class PokemonModule {}

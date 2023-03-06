@@ -94,7 +94,7 @@ export class ChatroomController {
     @CurrentUser() user: UserDocument,
     @Param() { id: chatroomId }: IdParams,
   ) {
-    this.canModifyService.checkChatroomMember(chatroomId, user);
+    await this.canModifyService.checkChatroomMember(chatroomId, user);
 
     return this.chatroomService.removeUser(chatroomId, user.id);
   }
@@ -106,7 +106,7 @@ export class ChatroomController {
     @Param() { id: chatroomId }: IdParams,
     @Query() { authorId }: ChatroomQuery,
   ) {
-    this.canModifyService.checkChatroomMember(chatroomId, user);
+    await this.canModifyService.checkChatroomMember(chatroomId, user);
 
     return this.chatMessageService.findAll({ chatroomId, authorId });
   }
@@ -117,7 +117,7 @@ export class ChatroomController {
     @CurrentUser() user: UserDocument,
     @Param() { id: chatroomId, chatMessageId }: ChatMessageIdParams,
   ) {
-    this.canModifyService.checkChatroomMember(chatroomId, user);
+    await this.canModifyService.checkChatroomMember(chatroomId, user);
 
     return this.chatMessageService.findOne(chatMessageId);
   }
@@ -129,7 +129,7 @@ export class ChatroomController {
     @Param() { id: chatroomId }: IdParams,
     @Body() chatMessageDto: ChatMessageDto,
   ) {
-    this.canModifyService.checkChatroomMember(chatroomId, user);
+    await this.canModifyService.checkChatroomMember(chatroomId, user);
 
     return this.chatMessageService.create(chatMessageDto, user.id, chatroomId);
   }
@@ -141,8 +141,8 @@ export class ChatroomController {
     @Param() { id: chatroomId, chatMessageId }: ChatMessageIdParams,
     @Body() chatMessageDto: ChatMessageDto,
   ) {
-    this.canModifyService.checkChatroomMember(chatroomId, user);
-    this.canModifyService.checkChatMessageAuthor(chatMessageId, user);
+    await this.canModifyService.checkChatroomMember(chatroomId, user);
+    await this.canModifyService.checkChatMessageAuthor(chatMessageId, user);
 
     return this.chatMessageService.update(chatMessageId, chatMessageDto);
   }
@@ -153,8 +153,8 @@ export class ChatroomController {
     @CurrentUser() user: UserDocument,
     @Param() { id: chatroomId, chatMessageId }: ChatMessageIdParams,
   ) {
-    this.canModifyService.checkChatroomMember(chatroomId, user);
-    this.canModifyService.checkChatMessageAuthor(chatMessageId, user);
+    await this.canModifyService.checkChatroomMember(chatroomId, user);
+    await this.canModifyService.checkChatMessageAuthor(chatMessageId, user);
 
     return this.chatMessageService.delete(chatMessageId);
   }
