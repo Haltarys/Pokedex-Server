@@ -7,6 +7,7 @@
 # Configuration
 root_directory="/app"
 app_directory="fs3-pokedex-back"
+branch_name=main
 image_name=$app_directory
 container_name=$app_directory
 
@@ -19,7 +20,7 @@ cd $root_directory
 if [ -d $app_directory ]; then
   echo "Pulling latest changes..."
   cd $app_directory
-  git checkout main && git pull
+  git checkout $branch_name && git pull
   cd $root_directory
 else
   echo "Cloning into $app_directory..."
@@ -30,13 +31,14 @@ commit_hash=$(git --git-dir="$app_directory/.git" rev-parse --short HEAD)
 
 # Build Docker image
 cp production.env "$app_directory/.env"
-cp -r ssl $app_directory
+rm -rf $app_directory/ssl
+cp -Lr ssl $app_directory
 echo "Building image..."
 docker build -t $image_name $app_directory
 
 # Stop previous container
 echo "Stopping previous container..."
-docker stop $container_name && docker rm $container_name && echo "Container stopped and deleted." || echo "No running container named $container_name."
+docker stop $container_name ; docker rm $container_name && echo "Container stopped and deleted." || echo "No container named $container_name."
 
 # Run image
 echo "Starting app server..."
@@ -44,6 +46,6 @@ docker run -d --name=$container_name -p 443:443 "$image_name:latest" && echo "Se
 
 # Log
 echo "Deployed commit $commit_hash."
-echo "$(date +"%Y-%m-%d %H:%M:%S"): Deployed commit $commit_hash." >> deploy.log
+echo "$(date +"%Y-%m-%d %H:%M:%S"): Deployed commit $commit_hash." >>deploy.log
 
 echo "Done."
