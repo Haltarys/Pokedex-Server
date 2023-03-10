@@ -8,6 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { AdminRoute } from 'src/auth/decorators/admin-route.decorator';
+import { UserRoute } from 'src/auth/decorators/user-route.decorator';
 import { IdParams } from 'src/utils/dto/id.params';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -23,7 +24,7 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @AdminRoute()
+  @UserRoute()
   @Get(':id')
   findOne(@Param() { id }: IdParams) {
     return this.userService.findOne(id);

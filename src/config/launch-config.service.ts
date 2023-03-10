@@ -21,12 +21,12 @@ export class LaunchConfigService {
     return this.configService.get<string>('CORS_ORIGIN') || '*';
   }
 
-  get httpsOptions(): ServerOptions | undefined {
-    if (this.isProduction) {
-      return {
-        key: readFileSync('./ssl/key.pem'),
-        cert: readFileSync('./ssl/cert.pem'),
-      };
-    }
+  get httpsOptions(): ServerOptions | null {
+    return this.isProduction
+      ? {
+          key: readFileSync('./ssl/key.pem'),
+          cert: readFileSync('./ssl/cert.pem'),
+        }
+      : null;
   }
 }
