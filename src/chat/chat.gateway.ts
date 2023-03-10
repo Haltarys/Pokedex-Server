@@ -22,6 +22,8 @@ import {
   WsDeleteChatMessageDto,
   WsFindAllChatMessagesDto,
   WsFindOneChatMessageDto,
+  WsJoinChatroomDto,
+  WsLeaveChatroomDto,
   WsUpdateChatMessageDto,
 } from './dto/ws-chat.dto';
 
@@ -52,6 +54,32 @@ export class ChatGateway implements OnGatewayConnection {
       payload.sub,
     );
     socket.join(joinedChatrooms.map((chatroom) => chatroom.id));
+  }
+
+  @SubscribeMessage('join-chatroom')
+  async joinChatroom(
+    @CurrentUser('id') userId: string,
+    @MessageBody() { path: { id: chatroomId } }: WsJoinChatroomDto,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    const chatroom = await this.chatroomService.addUser(chatroomId, userId);
+    if (chatroom) socket.join(chatroom.id);
+
+    return chatroom;
+  }
+
+  @SubscribeMessage('leave-chatroom')
+  async leaveChatroom(
+    @CurrentUser() user: UserDocument,
+    @MessageBody() { path: { id: chatroomId } }: WsLeaveChatroomDto,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    await this.canModifyService.checkChatroomMember(chatroomId, user);
+
+    const chatroom = await this.chatroomService.removeUser(chatroomId, user.id);
+    socket.leave(chatroomId);
+
+    return chatroom;
   }
 
   @SubscribeMessage('find-all-chat-messages')

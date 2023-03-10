@@ -13,6 +13,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: fs3-pokedex
     networks:
       - fs3-pokedex
     volumes:

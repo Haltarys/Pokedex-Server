@@ -6,6 +6,20 @@ import { ChatMessageIdParams } from './chat-message-id.params';
 import { ChatMessageDto } from './chat-message.dto';
 import { ChatroomQuery } from './chatroom.query';
 
+export class WsJoinChatroomDto implements WsParams {
+  @IsNotEmptyObject() // Workaround to ensure nested validation
+  @ValidateNested()
+  @Type(() => IdParams)
+  path: IdParams;
+}
+
+export class WsLeaveChatroomDto implements WsParams {
+  @IsNotEmptyObject() // Workaround to ensure nested validation
+  @ValidateNested()
+  @Type(() => IdParams)
+  path: IdParams;
+}
+
 export class WsFindAllChatMessagesDto implements WsParams {
   @IsNotEmptyObject() // Workaround to ensure nested validation
   @ValidateNested()
