@@ -35,6 +35,12 @@ export class ChatroomController {
     return this.chatroomService.findAll();
   }
 
+  @UserRoute()
+  @Get('joined')
+  findJoinedChatrooms(@CurrentUser('id') userId: string) {
+    return this.chatroomService.findJoinedChatrooms(userId);
+  }
+
   @Get(':id')
   findOne(@Param() { id }: IdParams) {
     return this.chatroomService.findOne(id);
