@@ -19,6 +19,10 @@ export class ChatroomService {
     return this.chatroomModel.findById(id).exec();
   }
 
+  async findJoinedChatrooms(userId: string): Promise<ChatroomDocument[]> {
+    return this.chatroomModel.find({ members: userId }).exec();
+  }
+
   async create(
     createChatroomDto: CreateChatroomDto,
   ): Promise<ChatroomDocument> {

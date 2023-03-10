@@ -5,8 +5,9 @@ import {
   OnGatewayConnection,
   SubscribeMessage,
   WebSocketGateway,
+  WebSocketServer,
 } from '@nestjs/websockets';
-import type { Socket } from 'socket.io';
+import type { Server, Socket } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { UserRoute } from 'src/auth/decorators/user-route.decorator';
@@ -15,6 +16,7 @@ import { WsValidationFilter } from 'src/utils/filters/ws-validation.filter';
 import { CustomValidationPipe } from 'src/utils/pipes/custom-validation.pipe';
 import { CanModifyService } from './can-modify.service';
 import { ChatMessageService } from './chat-message.service';
+import { ChatroomService } from './chatroom.service';
 import {
   WsCreateChatMessageDto,
   WsDeleteChatMessageDto,
@@ -31,14 +33,25 @@ export class ChatGateway implements OnGatewayConnection {
   constructor(
     private readonly authService: AuthService,
     private readonly canModifyService: CanModifyService,
+    private readonly chatroomService: ChatroomService,
     private readonly chatMessageService: ChatMessageService,
   ) {}
 
-  async handleConnection(@ConnectedSocket() client: Socket) {
-    if (!(await this.authService.validateJwt(client.handshake.auth.jwt))) {
-      client.emit('login_error', new UnauthorizedException());
-      client.disconnect(true);
+  @WebSocketServer()
+  io: Server;
+
+  async handleConnection(@ConnectedSocket() socket: Socket) {
+    const payload = await this.authService.validateJwt(
+      socket.handshake.auth.jwt,
+    );
+    if (!payload) {
+      socket.emit('login_error', new UnauthorizedException());
+      socket.disconnect(true);
     }
+    const joinedChatrooms = await this.chatroomService.findJoinedChatrooms(
+      payload.sub,
+    );
+    socket.join(joinedChatrooms.map((chatroom) => chatroom.id));
   }
 
   @SubscribeMessage('find-all-chat-messages')
@@ -71,7 +84,14 @@ export class ChatGateway implements OnGatewayConnection {
   ) {
     await this.canModifyService.checkChatroomMember(chatroomId, user);
 
-    return this.chatMessageService.create(chatMessageDto, user.id, chatroomId);
+    const chatMessage = await this.chatMessageService.create(
+      chatMessageDto,
+      user.id,
+      chatroomId,
+    );
+
+    this.io.to(chatroomId).emit('chat-message-created', chatMessage);
+    return chatMessage;
   }
 
   @SubscribeMessage('update-chat-message')
@@ -86,7 +106,12 @@ export class ChatGateway implements OnGatewayConnection {
     await this.canModifyService.checkChatroomMember(chatroomId, user);
     await this.canModifyService.checkChatMessageAuthor(chatMessageId, user);
 
-    return this.chatMessageService.update(chatMessageId, chatMessageDto);
+    const chatMessage = await this.chatMessageService.update(
+      chatMessageId,
+      chatMessageDto,
+    );
+    this.io.to(chatroomId).emit('chat-message-updated', chatMessage);
+    return chatMessage;
   }
 
   @SubscribeMessage('delete-chat-message')
@@ -98,6 +123,8 @@ export class ChatGateway implements OnGatewayConnection {
     await this.canModifyService.checkChatroomMember(chatroomId, user);
     await this.canModifyService.checkChatMessageAuthor(chatMessageId, user);
 
-    return this.chatMessageService.delete(chatMessageId);
+    const deleted = await this.chatMessageService.delete(chatMessageId);
+    this.io.to(chatroomId).emit('chat-message-deleted', chatMessageId);
+    return deleted;
   }
 }
