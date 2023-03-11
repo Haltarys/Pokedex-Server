@@ -2,7 +2,7 @@
 
 baseUrl="http://localhost:3001"
 
-function curlDevNull {
+function curlSilent {
   curl -Ss "$@"
 }
 
@@ -22,8 +22,8 @@ function createAdmin() {
 }
 
 function logIn() {
-  body='{"email":"bruce.wayne@wayne-enterprises.com", "password":"password"}'
-  curlDevNull -XPOST $baseUrl/auth/login -H "Content-Type: application/json" -d "$body"
+  body='{"email":"admin@example.com", "password":"password"}'
+  curlSilent -XPOST $baseUrl/auth/login -H "Content-Type: application/json" -d "$body"
 }
 
 function createDefaultChatrooms() {
@@ -31,14 +31,14 @@ function createDefaultChatrooms() {
   jwt=$(logIn | jq .jwt | unquote)
 
   # Get user ID
-  userId=$(curlDevNull $baseUrl/auth/profile -H "Authorization: Bearer $jwt" | jq .id | unquote)
+  userId=$(curlSilent $baseUrl/auth/profile -H "Authorization: Bearer $jwt" | jq .id | unquote)
 
   # Create default chatrooms
   body="{\"name\": \"general\", \"members\": [\"$userId\"]}"
-  curl -X POST "$baseUrl/chatroom" -H "Content-Type: application/json" -H "Authorization: Bearer $jwt" -d "$body" >/dev/null
+  curlSilent -X POST "$baseUrl/chatroom" -H "Content-Type: application/json" -H "Authorization: Bearer $jwt" -d "$body"
 
   body="{\"name\": \"private\", \"members\": [\"$userId\"]}"
-  curl -X POST "$baseUrl/chatroom" -H "Content-Type: application/json" -H "Authorization: Bearer $jwt" -d "$body" >/dev/null
+  curlSilent -X POST "$baseUrl/chatroom" -H "Content-Type: application/json" -H "Authorization: Bearer $jwt" -d "$body"
 }
 
 command -v jq >/dev/null 2>&1 || {
