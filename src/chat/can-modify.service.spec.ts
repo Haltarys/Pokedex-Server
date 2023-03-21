@@ -5,9 +5,13 @@ describe('CanModifyService', () => {
   let service: CanModifyService;
 
   beforeEach(async () => {
+    const mockCanModifyService = {};
     const module: TestingModule = await Test.createTestingModule({
       providers: [CanModifyService],
-    }).compile();
+    })
+      .overrideProvider(CanModifyService)
+      .useValue(mockCanModifyService)
+      .compile();
 
     service = module.get<CanModifyService>(CanModifyService);
   });

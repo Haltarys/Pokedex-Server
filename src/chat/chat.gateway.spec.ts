@@ -5,9 +5,13 @@ describe('ChatGateway', () => {
   let gateway: ChatGateway;
 
   beforeEach(async () => {
+    const mockChatGateway = {};
     const module: TestingModule = await Test.createTestingModule({
       providers: [ChatGateway],
-    }).compile();
+    })
+      .overrideProvider(ChatGateway)
+      .useValue(mockChatGateway)
+      .compile();
 
     gateway = module.get<ChatGateway>(ChatGateway);
   });

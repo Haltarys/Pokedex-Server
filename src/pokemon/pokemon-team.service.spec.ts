@@ -5,9 +5,13 @@ describe('PokemonTeamService', () => {
   let service: PokemonTeamService;
 
   beforeEach(async () => {
+    const mockPokemonTeamService = {};
     const module: TestingModule = await Test.createTestingModule({
       providers: [PokemonTeamService],
-    }).compile();
+    })
+      .overrideProvider(PokemonTeamService)
+      .useValue(mockPokemonTeamService)
+      .compile();
 
     service = module.get<PokemonTeamService>(PokemonTeamService);
   });

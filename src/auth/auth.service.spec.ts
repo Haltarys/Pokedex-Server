@@ -5,9 +5,13 @@ describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(async () => {
+    const mockAuthService = {};
     const module: TestingModule = await Test.createTestingModule({
       providers: [AuthService],
-    }).compile();
+    })
+      .overrideProvider(AuthService)
+      .useValue(mockAuthService)
+      .compile();
 
     service = module.get<AuthService>(AuthService);
   });

@@ -6,10 +6,14 @@ describe('PokemonTeamController', () => {
   let controller: PokemonTeamController;
 
   beforeEach(async () => {
+    const mockPokemonTeamService = {};
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [PokemonTeamController],
       providers: [PokemonTeamService],
-    }).compile();
+      controllers: [PokemonTeamController],
+    })
+      .overrideProvider(PokemonTeamService)
+      .useValue(mockPokemonTeamService)
+      .compile();
 
     controller = module.get<PokemonTeamController>(PokemonTeamController);
   });

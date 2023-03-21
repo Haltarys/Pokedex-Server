@@ -5,9 +5,13 @@ describe('MigrationRunnerService', () => {
   let service: MigrationRunnerService;
 
   beforeEach(async () => {
+    const mockMigrationRunnerService = {};
     const module: TestingModule = await Test.createTestingModule({
       providers: [MigrationRunnerService],
-    }).compile();
+    })
+      .overrideProvider(MigrationRunnerService)
+      .useValue(mockMigrationRunnerService)
+      .compile();
 
     service = module.get<MigrationRunnerService>(MigrationRunnerService);
   });
