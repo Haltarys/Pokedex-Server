@@ -7,9 +7,11 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const type = context.getType();
 
     if (type === 'ws') {
-      const handshake = context.switchToWs().getClient().handshake;
+      const { handshake } = context.switchToWs().getClient();
       handshake.headers.authorization = `Bearer ${handshake.auth.jwt}`;
       return handshake;
-    } else return context.switchToHttp().getRequest();
+    } else {
+      return context.switchToHttp().getRequest();
+    }
   }
 }

@@ -42,27 +42,25 @@ export class PokemonService {
     const speciesObservable = this.httpService
       .get(`/pokemon-species/${id}`)
       .pipe(
-        map(({ data }) => {
-          return {
-            happiness: data.base_happiness,
-            descriptions: data.flavor_text_entries
-              .filter(filterEnFr)
-              .map((e: any) => ({
-                lang: e.language.name,
-                version: e.version.name,
-                value: e.flavor_text,
-              })),
-            genera: data.genera.filter(filterEnFr).map((e: any) => ({
+        map(({ data }) => ({
+          happiness: data.base_happiness,
+          descriptions: data.flavor_text_entries
+            .filter(filterEnFr)
+            .map((e: any) => ({
               lang: e.language.name,
-              value: e.genus,
+              version: e.version.name,
+              value: e.flavor_text,
             })),
-            habitat: data.habitat?.name || '',
-            names: data.names.filter(filterEnFr).map((e: any) => ({
-              lang: e.language.name,
-              value: e.name,
-            })),
-          };
-        }),
+          genera: data.genera.filter(filterEnFr).map((e: any) => ({
+            lang: e.language.name,
+            value: e.genus,
+          })),
+          habitat: data.habitat?.name || '',
+          names: data.names.filter(filterEnFr).map((e: any) => ({
+            lang: e.language.name,
+            value: e.name,
+          })),
+        })),
       );
 
     return lastValueFrom<PokemonFullDto>(

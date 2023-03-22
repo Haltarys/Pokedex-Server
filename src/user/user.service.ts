@@ -27,17 +27,13 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserDocument> {
-    createUserDto.password = await this.authService.hashPassword(
-      createUserDto.password,
-    );
-    const user = new this.userModel(createUserDto);
-
-    return user.save().then((user) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      user.password = undefined;
-      return user;
+    const user = new this.userModel({
+      ...createUserDto,
+      password: await this.authService.hashPassword(createUserDto.password),
     });
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return user.save().then(({ password, ...rest }) => rest as UserDocument);
   }
 
   async update(

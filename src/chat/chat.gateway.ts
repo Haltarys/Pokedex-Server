@@ -25,7 +25,7 @@ import {
   WsJoinChatroomDto,
   WsLeaveChatroomDto,
   WsUpdateChatMessageDto,
-} from './dto/ws-chat.dto';
+} from './dto/ws-chat';
 
 @UsePipes(CustomValidationPipe)
 @UseFilters(WsValidationFilter)
