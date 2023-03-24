@@ -14,7 +14,7 @@ import { ChatMessageDto } from './dto/chat-message.dto';
 import { ChatMessageQuery } from './dto/chat-message.query';
 
 @AdminRoute()
-@Controller('chat-message')
+@Controller('chat-messages')
 export class ChatMessageController {
   constructor(private readonly chatMessageService: ChatMessageService) {}
 

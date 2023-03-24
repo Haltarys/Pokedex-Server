@@ -9,7 +9,7 @@ import { isAxiosError } from 'axios';
 import { PokemonIdParams } from './dto/pokemon-id.params';
 import { PokemonService } from './pokemon.service';
 
-@Controller('pokemon')
+@Controller('pokemons')
 export class PokemonController {
   constructor(private readonly pokemonService: PokemonService) {}
 

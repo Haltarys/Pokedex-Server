@@ -21,7 +21,7 @@ import { PokemonTeamOwnerException } from './exceptions/pokemon-team-owner.excep
 import { PokemonTeamService } from './pokemon-team.service';
 
 @UserRoute()
-@Controller('pokemon-team')
+@Controller('pokemon-teams')
 export class PokemonTeamController {
   constructor(private readonly pokemonTeamService: PokemonTeamService) {}
 
