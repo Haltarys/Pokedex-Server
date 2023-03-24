@@ -54,5 +54,6 @@ deploy-job:
     - chmod 644 ~/.ssh/known_hosts
   script:
     - echo "Deploying application..."
+    - scp deploy.sh $SSH_USER@$SSH_HOST:/app
     - ssh $SSH_USER@$SSH_HOST "/app/deploy.sh"
     - echo "Application successfully deployed."
