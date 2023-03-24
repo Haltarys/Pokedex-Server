@@ -22,7 +22,7 @@ import { ChatroomQuery } from './dto/chatroom.query';
 import { CreateChatroomDto } from './dto/create-chatroom.dto';
 import { UpdateChatroomDto } from './dto/update-chatroom.dto';
 
-@Controller('chatroom')
+@Controller('chatrooms')
 export class ChatroomController {
   constructor(
     private readonly canModifyService: CanModifyService,

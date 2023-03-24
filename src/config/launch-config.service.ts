@@ -17,8 +17,8 @@ export class LaunchConfigService {
     );
   }
 
-  get corsOrigin(): string {
-    return this.configService.get<string>('CORS_ORIGIN') || '*';
+  get corsOrigin(): string | string[] {
+    return this.configService.get<string>('CORS_ORIGIN')?.split(',') || '*';
   }
 
   get httpsOptions(): ServerOptions | null {
