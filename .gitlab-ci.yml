@@ -40,7 +40,7 @@ deploy-job:
   only:
     - main
   before_script: # Setup SSH
-    - 'command -v ssh-agent >/dev/null || (apt-get update -y && apt-get install openssh-client -y)'
+    - 'command -v ssh-agent >/dev/null || (apk update && apk add --no-progress openssh)'
 
     ## Give the right permissions, otherwise ssh-add will refuse to add files.
     - chmod 400 "$SSH_PRIVATE_KEY"
@@ -50,7 +50,7 @@ deploy-job:
     ## Create the SSH directory and give it the right permissions
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
-
+    - cp "$SSH_KNOWN_HOSTS" ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
   script:
     - echo "Deploying application..."
