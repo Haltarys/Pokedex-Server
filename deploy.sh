@@ -18,12 +18,11 @@ cd $root_directory
 
 # Clone repository or pull latest changes
 if [ -d $app_directory ]; then
-  echo "Pulling latest changes..."
   cd $app_directory
-  git checkout $branch_name && git pull
+  git checkout $branch_name && git pull || echo 'An error occurred while pulling changes.' && exit 1
+
   cd $root_directory
 else
-  echo "Cloning into $app_directory..."
   git clone git@gitlab.com:calvetalex/fs3-pokedex-back.git $app_directory --depth 1
 fi
 
@@ -38,7 +37,8 @@ docker build -t $image_name $app_directory
 
 # Stop previous container
 echo "Stopping previous container..."
-docker stop $container_name ; docker rm $container_name && echo "Container stopped and deleted." || echo "No container named $container_name."
+docker stop $container_name
+docker rm $container_name && echo "Container stopped and deleted." || echo "No container named $container_name."
 
 # Run image
 echo "Starting app server..."
