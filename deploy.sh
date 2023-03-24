@@ -19,7 +19,7 @@ cd $root_directory
 # Clone repository or pull latest changes
 if [ -d $app_directory ]; then
   cd $app_directory
-  git checkout $branch_name && git pull || echo 'An error occurred while pulling changes.' && exit 1
+  git checkout $branch_name && git pull || { echo 'An error occurred while pulling changes.' && exit 1; }
 
   cd $root_directory
 else
