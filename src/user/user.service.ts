@@ -37,8 +37,11 @@ export class UserService {
       password: await this.authService.hashPassword(createUserDto.password),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    return user.save().then(({ password, ...rest }) => rest as UserDocument);
+    return user.save().then((user) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...rest } = user.toObject();
+      return rest as UserDocument;
+    });
   }
 
   async update(

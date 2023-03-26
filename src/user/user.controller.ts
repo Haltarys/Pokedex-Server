@@ -27,7 +27,7 @@ export class UserController {
   }
 
   @UserRoute()
-  @Get('me')
+  @Get('@me')
   findCurrentUser(@CurrentUser() user: UserDocument) {
     return user;
   }
@@ -44,7 +44,7 @@ export class UserController {
   }
 
   @UserRoute()
-  @Patch('me')
+  @Patch('@me')
   updateCurrentUser(
     @CurrentUser('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
@@ -59,7 +59,7 @@ export class UserController {
   }
 
   @UserRoute()
-  @Delete('me')
+  @Delete('@me')
   deleteCurrentUser(@CurrentUser('id') id: string) {
     return this.userService.delete(id);
   }
