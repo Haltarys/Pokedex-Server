@@ -30,6 +30,12 @@ export class ChatroomController {
     private readonly chatMessageService: ChatMessageService,
   ) {}
 
+  @AdminRoute()
+  @Post()
+  create(@Body() createChatroomDto: CreateChatroomDto) {
+    return this.chatroomService.create(createChatroomDto);
+  }
+
   @Get()
   findAll() {
     return this.chatroomService.findAll();
@@ -44,12 +50,6 @@ export class ChatroomController {
   @Get(':id')
   findOne(@Param() { id }: IdParams) {
     return this.chatroomService.findOne(id);
-  }
-
-  @AdminRoute()
-  @Post()
-  create(@Body() createChatroomDto: CreateChatroomDto) {
-    return this.chatroomService.create(createChatroomDto);
   }
 
   @AdminRoute()
@@ -106,6 +106,18 @@ export class ChatroomController {
   }
 
   @UserRoute()
+  @Post(':id/chat-messages')
+  async createChatMessage(
+    @CurrentUser() user: UserDocument,
+    @Param() { id: chatroomId }: IdParams,
+    @Body() chatMessageDto: ChatMessageDto,
+  ) {
+    await this.canModifyService.checkChatroomMember(chatroomId, user);
+
+    return this.chatMessageService.create(chatMessageDto, user.id, chatroomId);
+  }
+
+  @UserRoute()
   @Get(':id/chat-messages')
   async findAllChatMessages(
     @CurrentUser() user: UserDocument,
@@ -126,18 +138,6 @@ export class ChatroomController {
     await this.canModifyService.checkChatroomMember(chatroomId, user);
 
     return this.chatMessageService.findOne(chatMessageId);
-  }
-
-  @UserRoute()
-  @Post(':id/chat-messages')
-  async createChatMessage(
-    @CurrentUser() user: UserDocument,
-    @Param() { id: chatroomId }: IdParams,
-    @Body() chatMessageDto: ChatMessageDto,
-  ) {
-    await this.canModifyService.checkChatroomMember(chatroomId, user);
-
-    return this.chatMessageService.create(chatMessageDto, user.id, chatroomId);
   }
 
   @UserRoute()

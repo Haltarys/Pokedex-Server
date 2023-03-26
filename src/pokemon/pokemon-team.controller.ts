@@ -33,6 +33,14 @@ export class PokemonTeamController {
       throw new PokemonTeamOwnerException();
   }
 
+  @Post()
+  create(
+    @CurrentUser('id') userId: string,
+    @Body() createPokemonTeamDto: CreatePokemonTeamDto,
+  ) {
+    return this.pokemonTeamService.create(createPokemonTeamDto, userId);
+  }
+
   @Get()
   findAll(
     @CurrentUser() user: UserDocument,
@@ -55,14 +63,6 @@ export class PokemonTeamController {
     await this.checkPokemonTeamOwner(pokemonTeamId, user);
 
     return this.pokemonTeamService.findOne(pokemonTeamId);
-  }
-
-  @Post()
-  create(
-    @CurrentUser('id') userId: string,
-    @Body() createPokemonTeamDto: CreatePokemonTeamDto,
-  ) {
-    return this.pokemonTeamService.create(createPokemonTeamDto, userId);
   }
 
   @Patch(':id')

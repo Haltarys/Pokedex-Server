@@ -20,6 +20,11 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto);
+  }
+
   @AdminRoute()
   @Get()
   findAll() {
@@ -36,11 +41,6 @@ export class UserController {
   @Get(':id')
   findOne(@Param() { id }: IdParams) {
     return this.userService.findOne(id);
-  }
-
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
   }
 
   @UserRoute()
