@@ -17,6 +17,7 @@ export class User {
   role: Role;
 }
 
-export type UserDocument = HydratedDocument<User>;
+export type UserWithPasswordDocument = HydratedDocument<User>;
+export type UserDocument = Omit<UserWithPasswordDocument, 'password'>;
 
 export const UserSchema = SchemaFactory.createForClass(User);

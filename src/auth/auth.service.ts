@@ -1,7 +1,10 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { UserDocument } from 'src/user/user.schema';
+import type {
+  UserDocument,
+  UserWithPasswordDocument,
+} from 'src/user/user.schema';
 import { UserService } from 'src/user/user.service';
 import { JwtPayload } from './dto/jwt-payload.dto';
 
@@ -17,7 +20,7 @@ export class AuthService {
   async validateCredentials(
     email: string,
     password: string,
-  ): Promise<UserDocument | null> {
+  ): Promise<UserWithPasswordDocument | null> {
     const user = await this.userService.findOneByEmail(email);
     if (user && (await this.comparePasswords(password, user.password))) {
       return user;

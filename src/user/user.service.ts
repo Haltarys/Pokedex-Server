@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import type { Model } from 'mongoose';
 import { AuthService } from 'src/auth/auth.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { User, UserDocument } from './user.schema';
+import type { CreateUserDto } from './dto/create-user.dto';
+import type { UpdateUserDto } from './dto/update-user.dto';
+import { User, UserDocument, UserWithPasswordDocument } from './user.schema';
 
 @Injectable()
 export class UserService {
@@ -21,9 +21,14 @@ export class UserService {
     return this.userModel.findById(id).exec();
   }
 
-  async findOneByEmail(email: string): Promise<UserDocument | null> {
+  async findOneByEmail(
+    email: string,
+  ): Promise<UserWithPasswordDocument | null> {
     // Here, we do need to return the password hash
-    return this.userModel.findOne({ email }).select('password').exec();
+    return this.userModel
+      .findOne<UserWithPasswordDocument>({ email })
+      .select('password')
+      .exec();
   }
 
   async create(createUserDto: CreateUserDto): Promise<UserDocument> {
