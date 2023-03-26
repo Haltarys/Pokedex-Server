@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { User } from 'src/user/user.schema';
-import { Chatroom } from './chatroom.schema';
+import type { User } from 'src/user/user.schema';
+import type { Chatroom } from './chatroom.schema';
 
 @Schema({ versionKey: false, toJSON: { virtuals: true }, timestamps: true })
 export class ChatMessage {

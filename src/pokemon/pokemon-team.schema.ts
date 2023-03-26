@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { User } from 'src/user/user.schema';
+import type { User } from 'src/user/user.schema';
 
 @Schema({ versionKey: false, toJSON: { virtuals: true } })
 export class PokemonTeam {

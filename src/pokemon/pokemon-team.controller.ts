@@ -12,11 +12,11 @@ import {
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { UserRoute } from 'src/auth/decorators/user-route.decorator';
 import { Role } from 'src/user/enums/role.enum';
-import { UserDocument } from 'src/user/user.schema';
-import { IdParams } from 'src/utils/dto/id.params';
-import { CreatePokemonTeamDto } from './dto/create-pokemon-team.dto';
-import { PokemonTeamQuery } from './dto/pokemon-team.query';
-import { UpdatePokemonTeamDto } from './dto/update-pokemon-team.dto';
+import type { UserDocument } from 'src/user/user.schema';
+import type { IdParams } from 'src/utils/dto/id.params';
+import type { CreatePokemonTeamDto } from './dto/create-pokemon-team.dto';
+import type { PokemonTeamQuery } from './dto/pokemon-team.query';
+import type { UpdatePokemonTeamDto } from './dto/update-pokemon-team.dto';
 import { PokemonTeamOwnerException } from './exceptions/pokemon-team-owner.exception';
 import { PokemonTeamService } from './pokemon-team.service';
 

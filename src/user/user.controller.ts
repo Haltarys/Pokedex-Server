@@ -10,10 +10,10 @@ import {
 import { AdminRoute } from 'src/auth/decorators/admin-route.decorator';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { UserRoute } from 'src/auth/decorators/user-route.decorator';
-import { IdParams } from 'src/utils/dto/id.params';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserDocument } from './user.schema';
+import type { IdParams } from 'src/utils/dto/id.params';
+import type { CreateUserDto } from './dto/create-user.dto';
+import type { UpdateUserDto } from './dto/update-user.dto';
+import type { UserDocument } from './user.schema';
 import { UserService } from './user.service';
 
 @Controller('users')

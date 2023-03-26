@@ -6,7 +6,7 @@ import type {
   UserWithPasswordDocument,
 } from 'src/user/user.schema';
 import { UserService } from 'src/user/user.service';
-import { JwtPayload } from './dto/jwt-payload.dto';
+import type { JwtPayload } from './dto/jwt-payload.dto';
 
 @Injectable()
 export class AuthService {

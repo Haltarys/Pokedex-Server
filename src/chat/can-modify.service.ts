@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Role } from 'src/user/enums/role.enum';
-import { UserDocument } from 'src/user/user.schema';
+import type { UserDocument } from 'src/user/user.schema';
 import { ChatMessageService } from './chat-message.service';
 import { ChatroomService } from './chatroom.service';
 import { ChatMessageAuthorException } from './exceptions/chat-message-author.exception';

@@ -1,10 +1,10 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { UserDocument } from 'src/user/user.schema';
+import type { UserDocument } from 'src/user/user.schema';
 import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { LoginRoute } from './decorators/login.decorator';
-import { CredentialsDto } from './dto/credentials.dto';
+import type { CredentialsDto } from './dto/credentials.dto';
 
 @Controller('auth')
 export class AuthController {

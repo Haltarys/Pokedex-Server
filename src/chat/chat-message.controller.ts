@@ -8,10 +8,10 @@ import {
   Query,
 } from '@nestjs/common';
 import { AdminRoute } from 'src/auth/decorators/admin-route.decorator';
-import { IdParams } from 'src/utils/dto/id.params';
+import type { IdParams } from 'src/utils/dto/id.params';
 import { ChatMessageService } from './chat-message.service';
-import { ChatMessageDto } from './dto/chat-message.dto';
-import { ChatMessageQuery } from './dto/chat-message.query';
+import type { ChatMessageDto } from './dto/chat-message.dto';
+import type { ChatMessageQuery } from './dto/chat-message.query';
 
 @AdminRoute()
 @Controller('chat-messages')

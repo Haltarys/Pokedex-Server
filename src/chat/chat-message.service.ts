@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import type { Model } from 'mongoose';
 import { ChatMessage, ChatMessageDocument } from './chat-message.schema';
-import { ChatMessageDto } from './dto/chat-message.dto';
-import { ChatMessageQuery } from './dto/chat-message.query';
+import type { ChatMessageDto } from './dto/chat-message.dto';
+import type { ChatMessageQuery } from './dto/chat-message.query';
 
 @Injectable()
 export class ChatMessageService {

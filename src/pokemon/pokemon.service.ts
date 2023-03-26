@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { combineLatestWith, lastValueFrom, map } from 'rxjs';
 import { PokemonFullDto } from 'src/pokemon/dto/pokemon-full.dto';
-import { PokemonBasicDto } from './dto/pokemon-basic.dto';
+import type { PokemonBasicDto } from './dto/pokemon-basic.dto';
 
 @Injectable()
 export class PokemonService {

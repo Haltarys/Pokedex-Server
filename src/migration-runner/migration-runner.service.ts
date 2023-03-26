@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
 import * as fs from 'fs/promises';
 import type { Db } from 'mongodb';
-import { Connection } from 'mongoose';
+import type { Connection } from 'mongoose';
 
 @Injectable()
 export class MigrationRunnerService {
