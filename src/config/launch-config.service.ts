@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { readFileSync } from 'fs';
-import type { ServerOptions } from 'https';
+import { ServerOptions } from 'https';
 
 @Injectable()
 export class LaunchConfigService {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import type { JwtModuleOptions, JwtOptionsFactory } from '@nestjs/jwt';
+import { JwtModuleOptions, JwtOptionsFactory } from '@nestjs/jwt';
 import { LaunchConfigService } from './launch-config.service';
 
 @Injectable()

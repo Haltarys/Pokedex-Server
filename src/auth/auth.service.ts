@@ -1,10 +1,7 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import type {
-  UserDocument,
-  UserWithPasswordDocument,
-} from 'src/user/user.schema';
+import { UserDocument, UserWithPasswordDocument } from 'src/user/user.schema';
 import { UserService } from 'src/user/user.service';
 import { JwtPayload } from './dto/jwt-payload.dto';
 

@@ -1,5 +1,5 @@
-import type { ExecutionContext } from '@nestjs/common';
-import type { UserDocument } from 'src/user/user.schema';
+import { ExecutionContext } from '@nestjs/common';
+import { UserDocument } from 'src/user/user.schema';
 
 export function getUserFromContext(context: ExecutionContext): UserDocument {
   const type = context.getType();
