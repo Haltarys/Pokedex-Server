@@ -11,13 +11,13 @@ import type { Server, Socket } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { UserRoute } from 'src/auth/decorators/user-route.decorator';
-import type { UserDocument } from 'src/user/user.schema';
+import { UserDocument } from 'src/user/user.schema';
 import { WsValidationFilter } from 'src/utils/filters/ws-validation.filter';
 import { CustomValidationPipe } from 'src/utils/pipes/custom-validation.pipe';
 import { CanModifyService } from './can-modify.service';
 import { ChatMessageService } from './chat-message.service';
 import { ChatroomService } from './chatroom.service';
-import type {
+import {
   WsCreateChatMessageDto,
   WsDeleteChatMessageDto,
   WsFindAllChatMessagesDto,

@@ -1,4 +1,4 @@
-import type { INestApplicationContext } from '@nestjs/common';
+import { INestApplicationContext } from '@nestjs/common';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 
 export class SocketIoAdapter extends IoAdapter {

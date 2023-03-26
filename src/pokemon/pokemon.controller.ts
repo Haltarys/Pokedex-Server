@@ -6,7 +6,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { isAxiosError } from 'axios';
-import type { PokemonIdParams } from './dto/pokemon-id.params';
+import { PokemonIdParams } from './dto/pokemon-id.params';
 import { PokemonService } from './pokemon.service';
 
 @Controller('pokemons')

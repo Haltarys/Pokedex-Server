@@ -11,16 +11,16 @@ import {
 import { AdminRoute } from 'src/auth/decorators/admin-route.decorator';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { UserRoute } from 'src/auth/decorators/user-route.decorator';
-import type { UserDocument } from 'src/user/user.schema';
-import type { IdParams } from 'src/utils/dto/id.params';
+import { UserDocument } from 'src/user/user.schema';
+import { IdParams } from 'src/utils/dto/id.params';
 import { CanModifyService } from './can-modify.service';
 import { ChatMessageService } from './chat-message.service';
 import { ChatroomService } from './chatroom.service';
-import type { ChatMessageIdParams } from './dto/chat-message-id.params';
-import type { ChatMessageDto } from './dto/chat-message.dto';
-import type { ChatroomQuery } from './dto/chatroom.query';
-import type { CreateChatroomDto } from './dto/create-chatroom.dto';
-import type { UpdateChatroomDto } from './dto/update-chatroom.dto';
+import { ChatMessageIdParams } from './dto/chat-message-id.params';
+import { ChatMessageDto } from './dto/chat-message.dto';
+import { ChatroomQuery } from './dto/chatroom.query';
+import { CreateChatroomDto } from './dto/create-chatroom.dto';
+import { UpdateChatroomDto } from './dto/update-chatroom.dto';
 
 @Controller('chatrooms')
 export class ChatroomController {

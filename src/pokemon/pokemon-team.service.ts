@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import type { Model } from 'mongoose';
-import type { CreatePokemonTeamDto } from './dto/create-pokemon-team.dto';
-import type { UpdatePokemonTeamDto } from './dto/update-pokemon-team.dto';
+import { Model } from 'mongoose';
+import { CreatePokemonTeamDto } from './dto/create-pokemon-team.dto';
+import { UpdatePokemonTeamDto } from './dto/update-pokemon-team.dto';
 import { PokemonTeam, PokemonTeamDocument } from './pokemon-team.schema';
 
 @Injectable()

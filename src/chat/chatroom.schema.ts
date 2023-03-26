@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import type { User } from 'src/user/user.schema';
+import { User } from 'src/user/user.schema';
 
 @Schema({ versionKey: false, toJSON: { virtuals: true } })
 export class Chatroom {

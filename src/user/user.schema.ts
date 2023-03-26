@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import type { HydratedDocument } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 import { Role } from 'src/user/enums/role.enum';
 
 @Schema({ versionKey: false, toJSON: { virtuals: true } })
