@@ -20,7 +20,7 @@ export class PokemonController {
     } catch (err) {
       if (isAxiosError(err)) {
         throw new HttpException(
-          err.response?.statusText ?? '',
+          err.response?.statusText ?? 'Unknown HTTP error',
           err.response?.status ?? HttpStatus.BAD_REQUEST,
         );
       }
