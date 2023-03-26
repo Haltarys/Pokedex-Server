@@ -1,15 +1,10 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import type { User, UserWithPasswordDocument } from 'src/user/user.schema';
+import type { User } from 'src/user/user.schema';
+import { getUserFromContext } from 'src/utils/user';
 
 export const CurrentUser = createParamDecorator(
   (data: keyof User | 'id', context: ExecutionContext) => {
-    let user: UserWithPasswordDocument;
-    const type = context.getType();
-    if (type === 'ws') {
-      user = context.switchToWs().getClient().handshake.user;
-    } else {
-      user = context.switchToHttp().getRequest().user;
-    }
-    return data ? user?.[data] : user;
+    const user = getUserFromContext(context);
+    return data ? user?.get(data) : user;
   },
 );
