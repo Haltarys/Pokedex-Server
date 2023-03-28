@@ -7,7 +7,7 @@
 # Configuration
 # shellcheck disable=SC2034
 gitlab_url="git@gitlab.com:calvetalex/fs3-pokedex-back.git"
-github_url="https://Haltarys/Pokedex-Server.git"
+github_url="https://github.com/Haltarys/Pokedex-Server.git"
 root_directory="/app"
 app_directory="Pokemon-Server"
 branch_name=main
