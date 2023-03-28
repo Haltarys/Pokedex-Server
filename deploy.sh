@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Copy this script over to the private server and run it to deploy the app.
-# Copy: scp deploy.sh root@<server_ip>:/app/deploy.sh
-# Run: ssh root@<server_ip> "/app/deploy.sh"
+# Copy: scp deploy.sh root@<server_ip>:/app
+# Run: ssh root@<server_ip> "/app/deploy.sh" [gitlab|github]
 
 # Configuration
 # shellcheck disable=SC2034
