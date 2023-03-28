@@ -13,7 +13,17 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v3
-      - uses: appleboy/ssh-action@v0.1.8
+      # TODO: run test workflow
+      - name: Copy deploy script
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: deploy.sh
+          target: /app
+      - name: Deploy
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
