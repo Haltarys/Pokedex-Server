@@ -8,6 +8,8 @@ jobs:
     name: Build, test and lint
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+
       - name: Setup
         uses: ./.github/actions/setup
 
