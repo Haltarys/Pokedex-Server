@@ -5,8 +5,11 @@
 # Run: ssh root@<server_ip> "/app/deploy.sh"
 
 # Configuration
+# shellcheck disable=SC2034
+gitlab_url="git@gitlab.com:calvetalex/fs3-pokedex-back.git"
+github_url="https://Haltarys/Pokedex-Server.git"
 root_directory="/app"
-app_directory="fs3-pokedex-back"
+app_directory="Pokemon-Server"
 branch_name=main
 image_name=$app_directory
 container_name=$app_directory
@@ -14,17 +17,17 @@ container_name=$app_directory
 echo "Deploying..."
 
 # Ensure we start in the right directory
-cd $root_directory
+# cd $root_directory
 
-# Clone repository or pull latest changes
-if [ -d $app_directory ]; then
-  cd $app_directory
-  git checkout $branch_name && git pull || { echo "An error occurred while pulling changes." && exit 1; }
+# Determine repository URL
+repository_url="${1:-gitlab}_url"
+repository_url="${!repository_url}"
 
-  cd $root_directory
-else
-  git clone git@gitlab.com:calvetalex/fs3-pokedex-back.git $app_directory --depth 1
-fi
+[ -z "$repository_url" ] && echo "Repository URL not found." && exit 1
+
+# Remove and clone repository
+rm -rf $app_directory
+git clone $repository_url $app_directory --depth 1 --branch $branch_name
 
 commit_hash=$(git --git-dir="$app_directory/.git" rev-parse --short HEAD)
 
