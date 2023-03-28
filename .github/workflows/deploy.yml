@@ -13,9 +13,8 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v3
-      # TODO: run test workflow
       - name: Run test workflow
-        uses: ./.github/workflows/test.yml
+        uses: ./.github/actions/test.yml
       # - name: Copy deploy script
       #   uses: appleboy/scp-action@master
       #   with:

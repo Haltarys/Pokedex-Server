@@ -1,0 +1,22 @@
+name: Test
+description: Builds, tests and lints the project using Yarn classic
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile --no-progress
+      shell: bash
+    - name: Build
+      run: yarn run build
+      shell: bash
+    - name: Test
+      run: yarn run test
+      shell: bash
+    - name: Lint
+      run: yarn run lint
+      shell: bash
