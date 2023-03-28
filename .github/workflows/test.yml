@@ -15,6 +15,7 @@ jobs:
         # with:
         #   node-version: 18
 
+      # TODO: remove this step
       - name: version
         run: node --version
 

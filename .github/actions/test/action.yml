@@ -7,9 +7,11 @@ runs:
     - name: Build
       run: yarn run build
       shell: bash
+
     - name: Test
       run: yarn run test
       shell: bash
+
     - name: Lint
       run: yarn run lint
       shell: bash
