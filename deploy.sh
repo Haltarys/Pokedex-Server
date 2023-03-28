@@ -17,7 +17,7 @@ container_name=$app_directory
 echo "Deploying..."
 
 # Ensure we start in the right directory
-# cd $root_directory
+cd $root_directory
 
 # Determine repository URL
 repository_url="${1:-gitlab}_url"
