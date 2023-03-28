@@ -12,9 +12,26 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/workflows/test.yml
 
-      - uses: appleboy/ssh-action@v0.1.8
+      - name: Setup
+        uses: ./.github/actions/setup
+        with:
+          node-version: 18
+
+      - name: Run tests
+        uses: ./.github/actions/test
+
+      - name: Copy deploy script
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: deploy.sh
+          target: /app
+
+      - name: Deploy to server
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}

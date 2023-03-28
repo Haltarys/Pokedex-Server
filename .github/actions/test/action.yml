@@ -1,0 +1,17 @@
+name: Test
+description: Builds, tests, and lints the project
+
+runs:
+  using: composite
+  steps:
+    - name: Build
+      run: yarn run build
+      shell: bash
+
+    - name: Test
+      run: yarn run test
+      shell: bash
+
+    - name: Lint
+      run: yarn run lint
+      shell: bash

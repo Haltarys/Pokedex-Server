@@ -1,6 +1,7 @@
 name: Test
 
-on: [pull_request, workflow_call]
+on:
+  pull_request:
 
 jobs:
   test:
@@ -8,10 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+
+      - name: Setup
+        uses: ./.github/actions/setup
         with:
           node-version: 18
-      - run: yarn install --frozen-lockfile --no-progress
-      - run: yarn run build
-      - run: yarn run test
-      - run: yarn run lint
+
+      - name: Run tests
+        uses: ./.github/actions/test
