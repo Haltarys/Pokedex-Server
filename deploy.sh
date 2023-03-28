@@ -9,7 +9,7 @@
 gitlab_url="git@gitlab.com:calvetalex/fs3-pokedex-back.git"
 github_url="https://github.com/Haltarys/Pokedex-Server.git"
 root_directory="/app"
-app_directory="Pokemon-Server"
+app_directory="pokedex-server"
 branch_name=main
 image_name=$app_directory
 container_name=$app_directory
