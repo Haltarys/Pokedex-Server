@@ -12,12 +12,8 @@ jobs:
 
       - name: Setup
         uses: ./.github/actions/setup
-        # with:
-        #   node-version: 18
-
-      # TODO: remove this step
-      - name: version
-        run: node --version
+        with:
+          node-version: 18
 
       - name: Run tests
         uses: ./.github/actions/test
