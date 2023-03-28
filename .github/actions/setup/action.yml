@@ -13,9 +13,6 @@ runs:
     - uses: actions/setup-node@v3
       with:
         node-version: ${{ inputs.node-version }}
-    - name: version
-      run: node --version
-      shell: bash
     - name: Install dependencies
       run: yarn install --frozen-lockfile --no-progress
       shell: bash
